@@ -8,16 +8,20 @@ const App=()=>{
     let [items,setItems]=useState([]);
 
     let fromlocalstorage=JSON.parse(localStorage.getItem({items}));
-  
+
+    
     console.log(fromlocalstorage,"this one");
     console.log("items", items);
 
-    
-    if(items.length===0)
+
+    if(fromlocalstorage)
     {
-      for(let i=0;i<fromlocalstorage.items.length;i++)
+      if(items.length===0)
       {
-        items.push(fromlocalstorage.items[i]);
+        for(let i=0;i<fromlocalstorage.items.length;i++)
+        {
+          items.push(fromlocalstorage.items[i]);
+        }
       }
     }
 
