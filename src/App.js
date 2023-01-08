@@ -10,8 +10,8 @@ const App=()=>{
     let fromlocalstorage=JSON.parse(localStorage.getItem({items}));
 
     
-    console.log(fromlocalstorage,"this one");
-    console.log("items", items);
+    // console.log(fromlocalstorage,"this one");
+    // console.log("items", items);
 
 
     if(fromlocalstorage)
@@ -25,7 +25,7 @@ const App=()=>{
       }
     }
 
-    console.log("items now ",items);
+    // console.log("items now ",items);
     localStorage.setItem({items},JSON.stringify({items}));
 
     // if(fromlocalstorage)
@@ -53,8 +53,13 @@ const App=()=>{
     }
 
     const deleteItems=(id)=>{
-          console.log("hello pj");  
-
+          // console.log("hello pj");  
+          if(items.length===1)
+          {
+            items=[];
+            localStorage.clear();
+          }
+          console.log(id);
           setItems((oldItems)=>{
             return oldItems.filter((ele,idx)=>{
                return idx!==id;
