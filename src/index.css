@@ -130,3 +130,8 @@ ol li{
   }
 
 }
+.main{
+  display: flex;
+  justify-content: space-between;
+  margin-right: 2.2rem ;
+}

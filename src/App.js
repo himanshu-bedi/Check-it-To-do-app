@@ -6,6 +6,8 @@ const App=()=>{
   
     const [list,setList]=useState("");
     let [items,setItems]=useState([]);
+    const [Button,setButton]=useState(true);
+    const [weNeedid,setweNeedid]=useState(null);
 
     let fromlocalstorage=JSON.parse(localStorage.getItem({items}));
 
@@ -41,8 +43,15 @@ const App=()=>{
 
     const show=()=>{
 
+      if(!list)
+      {
+
+      }
+      else
+      {
         setItems((prevValue)=>{
-            let arr= [...prevValue,list];
+           let modified={id:new Date().getTime().toString(),name:list}
+            let arr= [...prevValue,modified];
            
             return arr;
             
@@ -50,6 +59,7 @@ const App=()=>{
 
        
         setList("");
+      }
     }
 
     const deleteItems=(id)=>{
@@ -60,12 +70,41 @@ const App=()=>{
             localStorage.clear();
           }
           console.log(id);
-          setItems((oldItems)=>{
-            return oldItems.filter((ele,idx)=>{
-               return idx!==id;
-            });
-          })
+
+         const updated=items.filter((ele)=>{
+          return ele.id!==id;
+         })
+         setItems(updated);
     };
+
+    const editItems=(id)=>{
+      // const thing=items[id];
+      setButton(false);
+
+      const clickedItem=items.find((ele)=>{
+        return ele.id===id;
+      })
+      console.log(clickedItem);
+
+      setList(clickedItem.name);
+
+      setweNeedid(clickedItem.id);
+      
+    }
+
+    const editButton=()=>{
+         const newitemarray=items.map((ele)=>{
+          if(ele.id===weNeedid)
+          {
+            return {...ele, name:list}
+          }
+          else
+          return ele;
+         })
+         setItems(newitemarray);
+         setButton(true);
+         setList('');
+    }
 
     
    
@@ -77,7 +116,12 @@ const App=()=>{
         <div className='center_div'>
             <h1>To do List</h1>
             <input type="text" placeholder="Write item to add" className='input_field' onChange={inputlist} value={list}></input>
-            <button className='btn' onClick={show} >+</button>
+
+            {
+            Button===true?
+            <button className='btn' onClick={show} >+</button>:
+            <button className='fa fa-edit' onClick={editButton} ></button>
+            }
 
             <ol>
                 
@@ -85,10 +129,10 @@ const App=()=>{
                     
                     items.map((val,index)=>{
                        return <ToDoList 
-                       itemval={val}
-                       value={index}
-                       id={index}
+                       itemval={val.name}
+                       id={val.id}
                        whenclick={deleteItems}
+                       editit={editItems}
                        />
                        })
                    }
